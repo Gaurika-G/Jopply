@@ -3,13 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask Perplexity AI</title>
+    <title>AI Cover Letter Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Ask Perplexity AI</h1>
-    <form action="/ask" method="post">
-        <input type="text" name="question" placeholder="Enter your question" required>
-        <button type="submit">Ask</button>
-    </form>
+    <div class="container">
+        <!-- Left Section: User Profile -->
+        <div class="section left">
+            <h2>User Profile</h2>
+
+            <!-- Experiences -->
+            <label>Experiences:</label>
+            <div id="experience-container">
+                <input type="text" name="experience" placeholder="Software Engineer at Google">
+            </div>
+            <button onclick="addExperience()">Add Another</button>
+
+            <!-- Skills -->
+            <label>Skills:</label>
+            <input type="text" id="skills" placeholder="Python, SQL, AI, Web Dev">
+
+            <!-- Education -->
+            <label>Education:</label>
+            <input type="text" id="education" placeholder="BSc in Computer Science">
+
+            <!-- Hackathons -->
+            <label>Hackathons:</label>
+            <div id="hackathon-container">
+                <input type="text" name="hackathon" placeholder="Hack the North 2024">
+            </div>
+            <button onclick="addHackathon()">Add Another</button>
+
+            <!-- Projects -->
+            <label>Projects:</label>
+            <div id="project-container">
+                <input type="text" name="project" placeholder="AI Resume Parser">
+            </div>
+            <button onclick="addProject()">Add Another</button>
+        </div>
+
+
+
+    <!-- Middle Section: AI Cover Letter (A4 Paper Style) -->
+        <div class="section middle">
+            <h2>Generated Cover Letter</h2>
+            <div id="cover-letter" class="cover-letter-box">
+                <!-- Default A4-style Cover Letter Format -->
+                <h3>[Your Name]</h3>
+                <p>[Date]</p>
+                <p>[Hiring Manager’s Name]</p>
+                <p>[Company Name]</p>
+                <p>[Company Address]</p>
+                <br>
+                <p>Dear [Hiring Manager’s Name],</p>
+                <p>I'm excited to apply for the [Job Title] position at [Company Name]. With my experience in [Your Skills/Background], I believe I would be a great fit for this role.</p>
+                <p>[Your key qualifications and why you're a good fit]</p>
+                <p>I’d love the opportunity to discuss how I can contribute to [Company Name]. Looking forward to your response.</p>
+                <br>
+                <p>Best Regards,</p>
+                <p>[Your Name]</p>
+            </div>
+            <button onclick="generateCoverLetter()">Generate Cover Letter</button>
+        </div>
+
+    <!-- Right Section: Job Details -->
+        <div class="section right">
+            <h2>Job Details</h2>
+            <label>Job Title:</label>
+            <input type="text" id="job-title" placeholder="Software Engineer">
+
+            <label>Company Name:</label>
+            <input type="text" id="company-name" placeholder="Google">
+
+            <label>Job Description:</label>
+            <textarea id="job-desc" rows="5" placeholder="Write the job description here..."></textarea>
+
+            <label>Location (Optional):</label>
+            <input type="text" id="location" placeholder="San Francisco, CA">
+        </div>
+    </div>
+
+    <script>
+        function addExperience() {
+            let container = document.getElementById("experience-container");
+            let input = document.createElement("input");
+            input.type = "text";
+            input.name = "experience";
+            input.placeholder = "Another experience...";
+            container.appendChild(input);
+        }
+
+        function addHackathon() {
+            let container = document.getElementById("hackathon-container");
+            let input = document.createElement("input");
+            input.type = "text";
+            input.name = "hackathon";
+            input.placeholder = "Another hackathon...";
+            container.appendChild(input);
+        }
+
+        function addProject() {
+            let container = document.getElementById("project-container");
+            let input = document.createElement("input");
+            input.type = "text";
+            input.name = "project";
+            input.placeholder = "Another project...";
+            container.appendChild(input);
+        }
+
+        function generateCoverLetter() {
+            let experiences = Array.from(document.getElementsByName("experience")).map(i => i.value);
+            let skills = document.getElementById("skills").value;
+            let education = document.getElementById("education").value;
+            let hackathons = Array.from(document.getElementsByName("hackathon")).map(i => i.value);
+            let projects = Array.from(document.getElementsByName("project")).map(i => i.value);
+
+            let jobTitle = document.getElementById("job-title").value;
+            let companyName = document.getElementById("company-name").value;
+            let jobDesc = document.getElementById("job-desc").value;
+            let location = document.getElementById("location").value;
+
+            document.getElementById("cover-letter").innerHTML = "<p>Generating cover letter...</p>";
+
+            fetch("/generate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    experiences, skills, education, hackathons, projects,
+                    job_title: jobTitle, company: companyName, job_description: jobDesc, location
+                })
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("cover-letter").innerHTML = data.replace(/\n/g, "<br>");
+            });
+        }
+    </script>
 </body>
 </html>
