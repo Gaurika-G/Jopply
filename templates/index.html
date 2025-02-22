@@ -63,7 +63,17 @@
                 <p>Best Regards,</p>
                 <p>[Your Name]</p>
             </div>
-            <button onclick="generateCoverLetter()">Generate Cover Letter</button>
+            <form id="cover-letter-form">
+                <button type="submit">Generate Cover Letter</button>
+            </form>
+            
+            <script>
+            document.getElementById("cover-letter-form").addEventListener("submit", function(event) {
+                event.preventDefault(); // Prevent full-page reload
+            
+                generateCoverLetter();
+            });
+            </script>
         </div>
 
     <!-- Right Section: Job Details -->
