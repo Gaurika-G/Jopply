@@ -12,6 +12,14 @@
         <div class="section left">
             <h2>User Profile</h2>
 
+            <!-- Name -->
+            <label>Name:</label>
+            <input type="text" id="name" placeholder="Your Full Name">
+
+            <!-- Email -->
+            <label>Email:</label>
+            <input type="email" id="email" placeholder="your.email@example.com">
+
             <!-- Experiences -->
             <label>Experiences:</label>
             <div id="experience-container">
@@ -121,34 +129,35 @@
             input.placeholder = "Another project...";
             container.appendChild(input);
         }
-
+        
         function generateCoverLetter() {
-            let experiences = Array.from(document.getElementsByName("experience")).map(i => i.value);
-            let skills = document.getElementById("skills").value;
-            let education = document.getElementById("education").value;
-            let hackathons = Array.from(document.getElementsByName("hackathon")).map(i => i.value);
-            let projects = Array.from(document.getElementsByName("project")).map(i => i.value);
+        let name = document.getElementById("name").value;
+        let email = document.getElementById("email").value;
+        let experiences = Array.from(document.getElementsByName("experience")).map(i => i.value);
+        let skills = document.getElementById("skills").value;
+        let education = document.getElementById("education").value;
+        let hackathons = Array.from(document.getElementsByName("hackathon")).map(i => i.value);
+        let projects = Array.from(document.getElementsByName("project")).map(i => i.value);
+        let jobTitle = document.getElementById("job-title").value;
+        let companyName = document.getElementById("company-name").value;
+        let jobDesc = document.getElementById("job-desc").value;
+        let location = document.getElementById("location").value;
 
-            let jobTitle = document.getElementById("job-title").value;
-            let companyName = document.getElementById("company-name").value;
-            let jobDesc = document.getElementById("job-desc").value;
-            let location = document.getElementById("location").value;
+        document.getElementById("cover-letter").innerHTML = "<p>Generating cover letter...</p>";
 
-            document.getElementById("cover-letter").innerHTML = "<p>Generating cover letter...</p>";
-
-            fetch("/generate", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    experiences, skills, education, hackathons, projects,
-                    job_title: jobTitle, company: companyName, job_description: jobDesc, location
-                })
+        fetch("/generate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name, email, experiences, skills, education, hackathons, projects,
+                job_title: jobTitle, company: companyName, job_description: jobDesc, location
             })
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("cover-letter").innerHTML = data.replace(/\n/g, "<br>");
-            });
-        }
+        })
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("cover-letter").innerHTML = data.replace(/\n/g, "<br>");
+        });
+    }
     </script>
 </body>
 </html>

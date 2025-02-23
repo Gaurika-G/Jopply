@@ -44,17 +44,11 @@ def ask():
 # AI Cover Letter Generator Route (Functionality from app.py)
 @app.route('/generate', methods=['POST'])
 def generate():
-    data = request.json  # Get user input from frontend
+    data = request.json  
 
-    # Save job details to a file (delete previous data first)
-    job_file = "job_data.json"
-    if os.path.exists(job_file):  
-        os.remove(job_file) 
-
-    with open(job_file, "w") as file:
-        json.dump(data, file, indent=4) 
-
-    # Extract job details for AI
+    # Extract user input
+    name = data.get("name", "Your Name")
+    email = data.get("email", "your.email@example.com")
     experiences = ", ".join(data.get("experiences", []))
     skills = data.get("skills", "")
     education = data.get("education", "")
@@ -75,7 +69,9 @@ def generate():
         "model": "sonar-pro",
         "messages": [
             {"role": "system", "content": "You are an AI cover letter generator."},
-            {"role": "user", "content": f"Write a professional cover letter for {job_title} at {company} in {location}. Job description: {job_desc}. User's background: Education: {education}, Skills: {skills}, Experience: {experiences}, Hackathons: {hackathons}, Projects: {projects}."}
+            {"role": "user", "content": f"Write a professional cover letter for {job_title} at {company} in {location}. Job description: {job_desc}. "
+                                        f"User's background: Name: {name}, Email: {email}, Education: {education}, Skills: {skills}, "
+                                        f"Experience: {experiences}, Hackathons: {hackathons}, Projects: {projects}."}
         ]
     }
 
@@ -84,10 +80,10 @@ def generate():
     if response.status_code == 200:
         response_data = response.json()
         cover_letter = response_data.get("choices", [{}])[0].get("message", {}).get("content", "No response")
-        
-        return cover_letter.replace("\\n", "\n")  # ✅ AI-generated content replaces blank cover letter
+        return cover_letter.replace("\\n", "\n")
     else:
         return "Failed to generate cover letter."
+
 
 
 if __name__ == '__main__':
