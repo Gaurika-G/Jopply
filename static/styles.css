@@ -66,20 +66,36 @@ textarea {
     height: 120px;  /* Set a fixed height for job description textarea */
 }
 
-/* Button at the bottom of the page */
+
+#generate-btn {
+    background: #2196F3;
+    color: white;
+    border-bottom: 20px solid white;
+    padding: 20px;  /* Increased padding to make the button larger and easier to click */
+    cursor: pointer;
+    width: 100%;
+    
+    margin-top: -30px;  /* Reduced margin-top to lift the button closer to the cover letter */
+    position: sticky;
+    bottom: 0;  /* Ensure the button stays at the bottom of the middle section */
+    z-index: 10;  /* Ensure button is always above other content */
+
+}
 button {
     background: #2196F3;
     color: white;
     border: none;
-    padding: 15px;
+    padding: 15px; /* Increased padding to make the button more prominent */
     cursor: pointer;
     width: 100%;
-    margin-top: 10px;  /* Space between the cover letter box and button */
+    margin-top: 10px;  /* Reduced margin-top to lift the button closer to the cover letter */
     position: sticky;
     bottom: 0;  /* Ensure the button stays at the bottom of the middle section */
     z-index: 10;  /* Ensure button is always above other content */
 }
-
+#generate-btn:hover {
+    background: #0b7dda;
+}
 button:hover {
     background: #0b7dda;
 }
