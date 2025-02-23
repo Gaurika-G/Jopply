@@ -49,10 +49,10 @@ def generate():
     # Save job details to a file (delete previous data first)
     job_file = "job_data.json"
     if os.path.exists(job_file):  
-        os.remove(job_file)  # ✅ Delete previous job file to avoid old data
+        os.remove(job_file) 
 
     with open(job_file, "w") as file:
-        json.dump(data, file, indent=4)  # ✅ Save new job details
+        json.dump(data, file, indent=4) 
 
     # Extract job details for AI
     experiences = ", ".join(data.get("experiences", []))
