@@ -7,8 +7,8 @@ import os
 app = Flask(__name__)
 
 # Replace with your actual API key
-API_KEY = "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"
-API_URL = "https://api.perplexity.ai/chat/completions"
+API_KEY = ""
+API_URL = ""
 
 @app.route('/')
 def home():
